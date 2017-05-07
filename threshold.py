@@ -151,12 +151,9 @@ classifier = svm.SVC(gamma=0.001)
 # We learn the digits on the first half of the digits
 classifier.fit(DATA, TARGET)
 
-#expected = [1 for x in range(len(CTRL_BIRD_FILES))]
 predicted = classifier.predict(PREDICT_BIRDS)
 
 print("Classification report for classifier %s:\n%s\n" %
       (classifier, metrics.classification_report(EXPECTED, predicted)))
 print("Confusion matrix:\n%s" % metrics.confusion_matrix(EXPECTED, predicted))
-#print(iar1)
-#plt.imshow(iar)
-#plt.show()
+
