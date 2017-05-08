@@ -110,9 +110,10 @@ for i in range(len(CTRL_NON_BIRD_FILES)):
 # Create a classifier: a support vector classifier
 classifier = svm.SVC(gamma=0.001)
 
-# We learn the digits on the first half of the digits
+#let's build the model
 classifier.fit(DATA, TARGET)
 
+#let's see how we do:
 predicted = classifier.predict(PREDICT_BIRDS)
 
 print("Classification report for classifier %s:\n%s\n" %
