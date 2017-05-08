@@ -17,6 +17,24 @@ MY_CTRL_NON_BIRDS_PATH = "/Users/ravill2/birdPhotos/CUB_200_2011/CUB_200_2011/mo
 IMAGE_ROWS = 128
 IMAGE_COLS = 128
 
+def pop_data_from_files(file_list, out_array, starting_pos_out_array):
+    """Populates data array in a double array from the input files."""
+    j = 0
+    k = starting_pos_out_array
+    for i in range(len(file_list)):
+        im = Image.open(file_list[j])
+        im = im.resize((IMAGE_ROWS, IMAGE_COLS), Image.NEAREST)
+        im = im.convert("RGB")
+        iar = np.array(im)
+        iar = b_and_w(iar)
+        iar1 = turn_to_single_array(iar)
+        m = 0
+        for l in range(len(iar1)):
+            out_array[k][m] = iar1[m]
+            m = m + 1
+        k = k + 1
+        j = j + 1
+    return out_array
 
 def b_and_w(image_array):
     """Returns a 0 if a pixel is [0,0,0] and 1 otherwise."""
@@ -72,72 +90,16 @@ for i in range(len(NON_BIRD_FILES)):
 DATA = [[0 for x in range(IMAGE_ROWS * IMAGE_COLS)]
         for y in range(len(BIRD_FILES) + len(NON_BIRD_FILES))]
 
-k = 0
-j = 0
-for i in range(len(BIRD_FILES)):
-    im = Image.open(BIRD_FILES[j])
-    im = im.resize((IMAGE_ROWS, IMAGE_COLS), Image.NEAREST)
-    im = im.convert("RGB")
-    iar = np.array(im)
-    iar = b_and_w(iar)
-    iar1 = turn_to_single_array(iar)
-    m = 0
-    for l in range(len(iar1)):
-        DATA[k][m] = iar1[m]
-        m = m + 1
-    k = k + 1
-    j = j + 1
-
-j = 0
-for i in range(len(NON_BIRD_FILES)):
-    im = Image.open(NON_BIRD_FILES[j])
-    im = im.resize((IMAGE_ROWS, IMAGE_COLS), Image.NEAREST)
-    im = im.convert("RGB")
-    iar = np.array(im)
-    iar = b_and_w(iar)
-    iar1 = turn_to_single_array(iar)
-    m = 0
-    for l in range(len(iar1)):
-        DATA[k][m] = iar1[m]
-        m = m + 1
-    k = k + 1
-    j = j + 1
+DATA = pop_data_from_files(BIRD_FILES, DATA, 0)
+DATA = pop_data_from_files(NON_BIRD_FILES, DATA, len(BIRD_FILES))
 
 # populate the samples double array
 PREDICT_BIRDS = [[
     0 for x in range(IMAGE_ROWS * IMAGE_COLS)
 ] for y in range(len(CTRL_BIRD_FILES) + len(CTRL_NON_BIRD_FILES))]
 
-k = 0
-j = 0
-for i in range(len(CTRL_BIRD_FILES)):
-    im = Image.open(CTRL_BIRD_FILES[j])
-    im = im.resize((IMAGE_ROWS, IMAGE_COLS), Image.NEAREST)
-    im = im.convert("RGB")
-    iar = np.array(im)
-    iar = b_and_w(iar)
-    iar1 = turn_to_single_array(iar)
-    m = 0
-    for l in range(len(iar1)):
-        PREDICT_BIRDS[k][m] = iar1[m]
-        m = m + 1
-    k = k + 1
-    j = j + 1
-
-j = 0
-for i in range(len(CTRL_NON_BIRD_FILES)):
-    im = Image.open(CTRL_NON_BIRD_FILES[j])
-    im = im.resize((IMAGE_ROWS, IMAGE_COLS), Image.NEAREST)
-    im = im.convert("RGB")
-    iar = np.array(im)
-    iar = b_and_w(iar)
-    iar1 = turn_to_single_array(iar)
-    m = 0
-    for l in range(len(iar1)):
-        PREDICT_BIRDS[k][m] = iar1[m]
-        m = m + 1
-    k = k + 1
-    j = j + 1
+PREDICT_BIRDS = pop_data_from_files(CTRL_BIRD_FILES, PREDICT_BIRDS, 0)
+PREDICT_BIRDS = pop_data_from_files(CTRL_NON_BIRD_FILES, PREDICT_BIRDS, len(CTRL_BIRD_FILES))
 
 EXPECTED = []
 for i in range(len(CTRL_BIRD_FILES)):
