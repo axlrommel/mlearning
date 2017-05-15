@@ -14,42 +14,42 @@ MY_NON_BIRDS_PATH = "/Users/ravill2/birdPhotos/CUB_200_2011/CUB_200_2011/model/n
 MY_CTRL_BIRDS_PATH = "/Users/ravill2/birdPhotos/CUB_200_2011/CUB_200_2011/model/ctrlBirds"
 MY_CTRL_NON_BIRDS_PATH = "/Users/ravill2/birdPhotos/CUB_200_2011/CUB_200_2011/model/ctrlNoBirds"
 
-IMAGE_ROWS = 128
-IMAGE_COLS = 128
+IMAGE_ROWS = 16
+IMAGE_COLS = 16
 
 def pop_data_from_files(file_list, out_array, starting_pos_out_array):
     """Populates data array in a double array from the input files."""
-    j = 0
-    k = starting_pos_out_array
-    for i in range(len(file_list)):
-        im = Image.open(file_list[j])
-        im = im.resize((IMAGE_ROWS, IMAGE_COLS), Image.NEAREST)
-        im = im.convert("RGB")
-        iar = np.array(im)
+    _j = 0
+    _k = starting_pos_out_array
+    for _i in range(len(file_list)):
+        _im = Image.open(file_list[_j])
+        _im = _im.resize((IMAGE_ROWS, IMAGE_COLS), Image.NEAREST)
+        _im = _im.convert("RGB")
+        iar = np.array(_im)
         iar = b_and_w(iar)
         iar1 = turn_to_single_array(iar)
-        m = 0
-        for l in range(len(iar1)):
-            out_array[k][m] = iar1[m]
-            m = m + 1
-        k = k + 1
-        j = j + 1
+        _m = 0
+        for _l in range(len(iar1)):
+            out_array[_k][_m] = iar1[_m]
+            _m += 1
+        _k += 1
+        _j += 1
     return out_array
 
 def b_and_w(image_array):
     """Returns a 0 if a pixel is [0,0,0] and 1 otherwise."""
     numrows = len(image_array)
     numcols = len(image_array[0])
-    newar = [[0 for x in range(numrows)] for y in range(numcols)]
+    newar = [[0 for _x in range(numrows)] for _y in range(numcols)]
 
-    i = 0
+    _i = 0
     for each_row in image_array:
-        j = 0
+        _j = 0
         for each_pix in each_row:
             if each_pix[0] != 0 or each_pix[1] != 0 or each_pix[2] != 0:
-                newar[i][j] = 1
-            j = j + 1
-        i = i + 1
+                newar[_i][_j] = 1
+            _j += 1
+        _i += 1
     return newar
 
 
