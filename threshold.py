@@ -1,5 +1,5 @@
 """ This module creates a model for identifying bird images that were correctly filtered """
-from os.path import isfile, join
+from os.path import isfile, join, dirname, basename
 from os import listdir
 
 import numpy as np
@@ -9,23 +9,29 @@ import numpy as np
 from sklearn import svm, metrics
 from PIL import Image
 
-MY_BIRDS_PATH = "/Users/ravill2/birdPhotos/CUB_200_2011/CUB_200_2011/model/birds"
-MY_NON_BIRDS_PATH = "/Users/ravill2/birdPhotos/CUB_200_2011/CUB_200_2011/model/noBirds"
-MY_CTRL_BIRDS_PATH = "/Users/ravill2/birdPhotos/CUB_200_2011/CUB_200_2011/model/ctrlBirds"
-MY_CTRL_NON_BIRDS_PATH = "/Users/ravill2/birdPhotos/CUB_200_2011/CUB_200_2011/model/ctrlNoBirds"
+MY_ROOT_PATH = "/Users/ravill2/birdPhotos/CUB_200_2011/CUB_200_2011/model/"
+MY_BIRDS_PATH = MY_ROOT_PATH + "birds"
+MY_NON_BIRDS_PATH = MY_ROOT_PATH + "noBirds"
+MY_CTRL_BIRDS_PATH = MY_ROOT_PATH + "ctrlBirds"
+MY_CTRL_NON_BIRDS_PATH = MY_ROOT_PATH + "ctrlNoBirds"
 
-IMAGE_ROWS = 16
-IMAGE_COLS = 16
+IMAGE_ROWS = 32
+IMAGE_COLS = 32
 
 def pop_data_from_files(file_list, out_array, starting_pos_out_array):
     """Populates data array in a double array from the input files."""
     _j = 0
     _k = starting_pos_out_array
+    _root = dirname(dirname(file_list[0]))
+    _bname = basename(dirname(file_list[0]))
     for _i in range(len(file_list)):
         _im = Image.open(file_list[_j])
+        _fname = basename(file_list[_j])
         _im = _im.resize((IMAGE_ROWS, IMAGE_COLS), Image.NEAREST)
         _im = _im.convert("RGB")
         iar = np.array(_im)
+        _im = _im.convert("L")
+        _im.save(join(_root, "conv", _bname, _fname))
         iar = b_and_w(iar)
         iar1 = turn_to_single_array(iar)
         _m = 0
