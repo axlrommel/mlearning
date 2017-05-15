@@ -1,13 +1,13 @@
-from PIL import Image
-import numpy as np
-import matplotlib.pyplot as plt
+""" This module creates a model for identifying bird images that were correctly filtered """
+from os.path import isfile, join
 from os import listdir
-from os.path import isfile, join, abspath
-# Standard scientific Python imports
-import matplotlib.pyplot as plt
 
-# Import datasets, classifiers and performance metrics
-from sklearn import datasets, svm, metrics
+import numpy as np
+#import matplotlib.pyplot as plt
+
+# Import classifiers and performance metrics
+from sklearn import svm, metrics
+from PIL import Image
 
 MY_BIRDS_PATH = "/Users/ravill2/birdPhotos/CUB_200_2011/CUB_200_2011/model/birds"
 MY_NON_BIRDS_PATH = "/Users/ravill2/birdPhotos/CUB_200_2011/CUB_200_2011/model/noBirds"
@@ -108,15 +108,15 @@ for i in range(len(CTRL_NON_BIRD_FILES)):
     EXPECTED.append(0)
 
 # Create a classifier: a support vector classifier
-classifier = svm.SVC(gamma=0.001)
+CLASSIFIER = svm.SVC(gamma=0.001)
 
 #let's build the model
-classifier.fit(DATA, TARGET)
+CLASSIFIER.fit(DATA, TARGET)
 
 #let's see how we do:
-predicted = classifier.predict(PREDICT_BIRDS)
+PREDICTED = CLASSIFIER.predict(PREDICT_BIRDS)
 
 print("Classification report for classifier %s:\n%s\n" %
-      (classifier, metrics.classification_report(EXPECTED, predicted)))
-print("Confusion matrix:\n%s" % metrics.confusion_matrix(EXPECTED, predicted))
+      (CLASSIFIER, metrics.classification_report(EXPECTED, PREDICTED)))
+print "Confusion matrix:\n%s" % metrics.confusion_matrix(EXPECTED, PREDICTED)
 
