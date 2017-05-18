@@ -26,12 +26,7 @@ def pop_data_from_files(file_list, out_array, starting_pos_out_array):
     _bname = basename(dirname(file_list[0]))
     for _i in range(len(file_list)):
         _im = Image.open(file_list[_j])
-        _fname = basename(file_list[_j])
-        _im = _im.resize((IMAGE_ROWS, IMAGE_COLS), Image.NEAREST)
-        _im = _im.convert("RGB")
         iar = np.array(_im)
-        _im = _im.convert("L")
-        _im.save(join(_root, "conv", _bname, _fname))
         iar = b_and_w(iar)
         iar1 = turn_to_single_array(iar)
         _m = 0
@@ -52,7 +47,8 @@ def b_and_w(image_array):
     for each_row in image_array:
         _j = 0
         for each_pix in each_row:
-            if each_pix[0] != 0 or each_pix[1] != 0 or each_pix[2] != 0:
+            #if each_pix[0] != 0 or each_pix[1] != 0 or each_pix[2] != 0: //for other than grayscale
+            if each_pix != 0: #grayscale
                 newar[_i][_j] = 1
             _j += 1
         _i += 1
