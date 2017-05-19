@@ -7,7 +7,10 @@ import numpy as np
 
 # Import classifiers and performance metrics
 from sklearn import svm, metrics
+from sklearn.externals import joblib
 from PIL import Image
+
+
 
 MY_ROOT_PATH = "/Users/ravill2/birdPhotos/CUB_200_2011/CUB_200_2011/model/"
 MY_BIRDS_PATH = MY_ROOT_PATH + "birds"
@@ -118,7 +121,10 @@ CLASSIFIER.fit(DATA, TARGET)
 #let's see how we do:
 PREDICTED = CLASSIFIER.predict(PREDICT_BIRDS)
 
+print PREDICTED
 print("Classification report for classifier %s:\n%s\n" %
       (CLASSIFIER, metrics.classification_report(EXPECTED, PREDICTED)))
 print "Confusion matrix:\n%s" % metrics.confusion_matrix(EXPECTED, PREDICTED)
+
+joblib.dump(CLASSIFIER, MY_ROOT_PATH + 'classifier.pkl')
 
