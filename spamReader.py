@@ -23,6 +23,7 @@ for i, item in enumerate(LINES):
 
 RESULTS = []
 
+# 1 is spam, 0 is not spam
 for i, item in enumerate(RLINES):
     RESULTS.append(int(item.strip()))
 
@@ -35,7 +36,7 @@ TEST = DATA[len(DATA)*7/10:]
 EXPECTED = RESULTS[len(DATA)*7/10:]
 
 # Create a classifier: a support vector classifier
-CLASSIFIER = svm.SVC(kernel='linear')
+CLASSIFIER = svm.SVC(kernel='rbf')
 
 #let's build the model
 CLASSIFIER.fit(TRAIN, TARGET)
