@@ -16,9 +16,20 @@ def main(argv):
         data[0][int(item.strip())-1] = 1 #input data starts with an index of 1
 
     # run images against the model
-    clf = joblib.load('classifierSpam.pkl')
+    clf = joblib.load('classifierSpam.rkl')
     results = clf.predict(data)
-    print results
+    if results[0] == 0:
+        print "RBF: Not Spam"
+    else:
+        print "RBF:Spam"
+
+    # run images against the model
+    clf1 = joblib.load('classifierSpam.lkl')
+    results = clf1.predict(data)
+    if results[0] == 0:
+        print "Linear: Not Spam"
+    else:
+        print "Linear: Spam"
 
 
 if __name__ == "__main__":
