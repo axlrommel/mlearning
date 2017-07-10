@@ -17,7 +17,7 @@ DATA = [[0 for x in range(NUM_FEATURES)]
         for y in range(len(LINES))]
 RESULTS = []
 
-# read data set 6000 rows x 1899 columns
+# read data set 5000 rows x 1899 columns
 for i, item in enumerate(LINES):
     sample = item.strip().split(' ')
     for j, feat in enumerate(sample):
@@ -26,12 +26,6 @@ for i, item in enumerate(LINES):
 # read the results: 1 is spam, 0 is not spam
 for i, item in enumerate(RLINES):
     RESULTS.append(int(item.strip()))
-
-# read the data set from text file: 5000 rows x 1899 columns
-#DATA[][]
-
-# read the results from text file: 6000 rows (1 = spam, 0 = no spam)
-# RESULTS[]
 
 #train set: first 70%
 TRAIN = DATA[:len(DATA)*7/10]
@@ -42,21 +36,35 @@ TEST = DATA[len(DATA)*7/10:]
 EXPECTED = RESULTS[len(DATA)*7/10:]
 
 # Create a classifier: a support vector classifier
-CLASSIFIER = svm.SVC(kernel='linear')
+LINEAR_CLASSIFIER = svm.SVC(kernel='linear')
 
 #let's build the model
-CLASSIFIER.fit(TRAIN, TARGET)
+LINEAR_CLASSIFIER.fit(TRAIN, TARGET)
 
 #let's see how we do:
-PREDICTED = CLASSIFIER.predict(TEST)
+PREDICTED = LINEAR_CLASSIFIER.predict(TEST)
 
 print("Classification report for classifier %s:\n%s\n" %
-      (CLASSIFIER, metrics.classification_report(EXPECTED, PREDICTED)))
+      (LINEAR_CLASSIFIER, metrics.classification_report(EXPECTED, PREDICTED)))
 print "Confusion matrix:\n%s" % metrics.confusion_matrix(EXPECTED, PREDICTED)
 
 # let's save our model in a file
-joblib.dump(CLASSIFIER, 'classifierSpam.lkl')
+joblib.dump(LINEAR_CLASSIFIER, 'classifierSpam.linkl')
 
+# Create a classifier: a support vector classifier
+RBF_CLASSIFIER = svm.SVC(kernel='rbf')
 
+#let's build the model
+RBF_CLASSIFIER.fit(TRAIN, TARGET)
+
+#let's see how we do:
+PREDICTED = RBF_CLASSIFIER.predict(TEST)
+
+print("Classification report for classifier %s:\n%s\n" %
+      (RBF_CLASSIFIER, metrics.classification_report(EXPECTED, PREDICTED)))
+print "Confusion matrix:\n%s" % metrics.confusion_matrix(EXPECTED, PREDICTED)
+
+# let's save our model in a file
+joblib.dump(RBF_CLASSIFIER, 'classifierSpam.rbfkl')
 
 
